@@ -75,7 +75,6 @@ public class ESPDevice {
     private Handler handler;
 
     private Session session;
-    private Security security;
     private Transport transport;
 
     private WiFiScanListener wifiScanListener;
@@ -548,6 +547,7 @@ public class ESPDevice {
 
     private void initSession(final ResponseListener listener) {
 
+        Security security;
         if (securityType.equals(ESPConstants.SecurityType.SECURITY_0)) {
             security = new Security0();
         } else {
