@@ -72,7 +72,6 @@ public class ESPDevice {
 
     private static final String TAG = "ESP:" + ESPDevice.class.getSimpleName();
 
-    private Context context;
     private Handler handler;
 
     private Session session;
@@ -101,7 +100,6 @@ public class ESPDevice {
 
     public ESPDevice(Context context, ESPConstants.TransportType transportType, ESPConstants.SecurityType securityType) {
 
-        this.context = context;
         handler = new Handler(Looper.getMainLooper());
         this.transportType = transportType;
         this.securityType = securityType;
