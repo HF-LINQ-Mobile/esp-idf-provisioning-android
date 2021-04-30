@@ -51,14 +51,13 @@ public class BLETransport implements Transport {
     private static final String TAG = "Espressif::" + BLETransport.class.getSimpleName();
 
     private Context context;
-    private BluetoothDevice currentDevice;
     private BluetoothGatt bluetoothGatt;
     private BluetoothGattService service;
     private ResponseListener currentResponseListener;
     private Semaphore transportToken;
     private ExecutorService dispatcherThreadPool;
-    private HashMap<String, String> uuidMap = new HashMap<>();
-    private ArrayList<String> charUuidList = new ArrayList<>();
+    private final HashMap<String, String> uuidMap = new HashMap<>();
+    private final ArrayList<String> charUuidList = new ArrayList<>();
 
     private String serviceUuid;
     private boolean isReadingDescriptors = false;
@@ -132,12 +131,11 @@ public class BLETransport implements Transport {
      * @param primaryServiceUuid Primary Service UUID
      */
     public void connect(BluetoothDevice bluetoothDevice, UUID primaryServiceUuid) {
-        this.currentDevice = bluetoothDevice;
         this.serviceUuid = primaryServiceUuid.toString();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            bluetoothGatt = this.currentDevice.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE);
+            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback, BluetoothDevice.TRANSPORT_LE);
         } else {
-            bluetoothGatt = this.currentDevice.connectGatt(context, false, gattCallback);
+            bluetoothGatt = bluetoothDevice.connectGatt(context, false, gattCallback);
         }
     }
 
@@ -154,7 +152,7 @@ public class BLETransport implements Transport {
         }
     }
 
-    private BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
+    private final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
 
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
